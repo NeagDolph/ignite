@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title>IGNITE</title>
+</head>
+<body>
+    <div id="title">
+        <div class="ignite">IGNITE</div>
+        <div class="countdown"></div>
+    </div>
+    <div class="mainSection">
+        <div class="subMain">
+            <img class="art"/>
+            <div class="imageOverlay">
+                <img src="play.png">
+            </div>
+            <div class="detailsOuter">
+                <div class="details">
+                    <div class="artistName"></div>
+                    <div class="songName"></div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <iframe src="./silence.mp3" allow="autoplay" type="audio/mpeg" id="preaudio" style="display: none"></iframe>
+    <audio autoplay id="audio">
+        <source src="https://server.igniteonline.net/radio/8000/radio.mp3?1586306153" type="audio/mpeg">
+    </audio>
+<script src="./main.js"></script>
+</body>
+</html>

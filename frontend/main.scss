@@ -1,0 +1,118 @@
+@font-face {
+  font-family: SignikaBold;
+  src: url("./fonts/SignikaNegative-Bold.ttf");
+}
+
+@font-face {
+  font-family: SignikaLight;
+  src: url("./fonts/SignikaNegative-Light.ttf");
+}
+
+@font-face {
+  font-family: Signika;
+  src: url("./fonts/SignikaNegative-Regular.ttf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #642b73; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #642b73,
+    #c6426e
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #642b73, #c6426e);
+  color: white;
+  overflow: hidden;
+}
+
+#title {
+  margin-top: 60px;
+  text-align: center;
+
+  .ignite {
+    font-size: 60px;
+    font-family: 'SignikaBold';
+  }
+
+  .countdown {
+    font-size: 20px;
+    font-family: 'Signika';
+  }
+}
+
+.mainSection {
+  width: 100%;
+  margin-top: 80px;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+
+  .subMain {
+    justify-content: center;
+    width: 250px;
+    display: block;
+    position: relative;
+    background: white;
+
+    .detailsOuter {
+      height: 250px;
+      display: flex;
+      align-items: center;
+      position: absolute;
+      left: 250px;
+      top: 0;
+      width: fit-content;
+      .details {
+        height: 60px;
+        margin-left: 10px;
+        .artistName {     
+          font-size: 30px;
+          font-family: 'SignikaBold';
+          white-space: nowrap;
+        }
+        .songName {
+          font-size: 18px;
+          font-family: 'SignikaLight';
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .art {
+      width: 250px;
+      height: 250px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.46);
+      user-select: none;
+    }
+
+    .imageOverlay {
+      background: rgba(0, 0, 0, 0.4);
+      transition: opacity 0.3s;
+      user-select: none;
+      text-align: center;
+      line-height: 250px;
+      height: 250px;
+      width: 250px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+  }
+
+}
