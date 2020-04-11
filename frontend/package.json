@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "jquery": "^3.4.1",
+    "micromodal": "^0.4.6",
     "nchan": "^1.0.10"
   }
 }
