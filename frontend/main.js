@@ -15,7 +15,7 @@ var volume = 0.5;
 var sub = new NchanSubscriber(apiURL);
 
 var count
-var countDownDate = new Date("May 30, 2020 12:00:00").getTime();
+var countDownDate = new Date("June 25, 2020 12:00:00").getTime();
 var playing = false;
 
 window.$ = window.jQuery = jquery;
@@ -36,7 +36,7 @@ sub.on("message", function(message) {
             $(".art").attr("src", data)
           })
           .catch((data) => {
-            $(".art").attr("src", "https://imgur.com/9OlmHbc.png")
+            $(".art").attr("src", "https://imgur.com/KwLz0bC.png")
           })
       }
     } else {
