@@ -5,31 +5,33 @@ import axios from 'axios'
 import MicroModal from 'micromodal';
 import modalcss from './modal.css'
 
-var audioObj
+var backendURL = "https://igniteonline.net/php/";
+var streamURL = "https://server.igniteradio.pw/radio/8000/radio.mp3";
+var apiURL = "https://listen.igniteradio.pw/api/live/nowplaying/ignite"
 
-var backendURL = "http://s823529950.websitehome.co.uk/"
+var audio;
+var volume = 0.5;
 
-var sub = new NchanSubscriber('https://server.igniteonline.net/api/live/nowplaying/ignite');
+var sub = new NchanSubscriber(apiURL);
 
 var count
-var countDownDate = new Date("May 5, 2020 12:00:00").getTime();
+var countDownDate = new Date("May 30, 2020 12:00:00").getTime();
 var playing = false;
-var storedsearch
 
 window.$ = window.jQuery = jquery;
 
-sub.on("message", function(message, message_metadata) {
+sub.on("message", function(message) {
     // Do something with the Now Playing data.
     let nowPlaying = JSON.parse(message);
-    let {title, artist, art} = nowPlaying.now_playing.song
-    $(".songName").text(title)
-    $(".artistName").text(artist.includes(";") ? artist.split(";")[0] : (artist.includes(",") ? artist.split(",")[0] : artist))
+    let {title, artist, art, album} = nowPlaying.now_playing.song
+
 
     if (nowPlaying.now_playing.streamer !== "") {
       $(".dj").text(nowPlaying.now_playing.streamer)
-      if ([nowPlaying.now_playing.song.album, artist] !== storedsearch) {
-        storedsearch = [nowPlaying.now_playing.song.album, artist]
-        axios.get(`${backendURL}album?albumname=${storedsearch[0]}&artistname=${storedsearch[1]}`)
+      $(".listeners").text(nowPlaying.listeners.current + " Listeners")
+      if (title !== $(".songName").text()) {
+        if (album === "") album = title
+        axios.get(`${backendURL}album?albumname=${album}&artistname=${artist}`)
           .then(({data}) => {
             $(".art").attr("src", data)
           })
@@ -41,8 +43,11 @@ sub.on("message", function(message, message_metadata) {
       $(".art").attr("src", art)
       $(".dj").text("AutoDJ")
       $(".listeners").text(nowPlaying.listeners.current + " Listeners")
-      console.log(nowPlaying)
     }
+
+    $(".songName").text(title)
+    $(".artistName").text(artist.includes(";") ? artist.split(";")[0] : (artist.includes(",") ? artist.split(",")[0] : artist))
+
 
 });
 
@@ -69,6 +74,7 @@ count = setInterval(setCountdown, 1000)
 setCountdown()
 
 $(document).ready(function() {
+  audio = new Audio(streamURL);
   if ($("#audio")[0].paused) {
     $(".imageOverlay").show()
     playing = false
@@ -92,9 +98,13 @@ $("#songSubmit").click(() => {
     method: 'post'
   })
     .then(({data}) => {
-      if (data == "success") {
-        $("#songSubmit").text("Success")
-        setTimeout(() => {$("#songSubmit").text("Submit")}, 2000)
+      if (data.includes("success")) {
+        $("#songSubmit").text("Submited")
+        $("#songSubmit").attr("disabled", "disabled")
+        
+        setTimeout(() => {$("#songSubmit").text("Submit"); 
+        $("#songSubmit").attr("disabled", false)}, 2000)
+      } else {
       }
     })
 })
@@ -107,22 +117,22 @@ var overlayTimeout
 
 var togglePause = () => {
   if (!playing) {
-    $("#audio")[0].volume = 0
-    $("#audio")[0].play()
-    $("#audio").animate({volume: 0.5}, 1000);
+    audio.volume = volume;
+    audio.play()
     $(".playbutton").hide()
     $(".pausebutton").show()
     playing = true
   } else {
     playing = false
-    $("#audio")[0].pause()
+    audio.pause()
     $(".pausebutton").hide()
     $(".playbutton").show()
   }
 }
 
 $(".slider").on("input", (data) => {
-  $("#audio")[0].volume = data.target.value / 100
+  volume = data.target.value / 100;
+  audio.volume = volume;
 })
 
 MicroModal.init();
