@@ -14019,9 +14019,21 @@ var count;
 var countDownDate = new Date("June 25, 2020 12:00:00").getTime();
 var playing = false;
 window.$ = window.jQuery = _jquery.default;
+
+function setObject(type, data) {
+  if (type == "art") {
+    $(".art").attr("src", data);
+  } else if (type == "listeners") {
+    $(".listeners").text(data + " Listener" + (data > 1 ? "s" : ""));
+  } else if (type == "dj") {
+    $(".dj").text(data);
+  }
+}
+
 sub.on("message", function (message) {
   // Do something with the Now Playing data.
   var nowPlaying = JSON.parse(message);
+  setObject("listeners", nowPlaying.listeners.current);
   var _nowPlaying$now_playi = nowPlaying.now_playing.song,
       title = _nowPlaying$now_playi.title,
       artist = _nowPlaying$now_playi.artist,
@@ -14029,23 +14041,22 @@ sub.on("message", function (message) {
       album = _nowPlaying$now_playi.album;
 
   if (nowPlaying.now_playing.streamer !== "") {
-    $(".dj").text(nowPlaying.now_playing.streamer);
-    $(".listeners").text(nowPlaying.listeners.current + " Listeners");
+    setObject("dj", nowPlaying.now_playing.streamer);
 
     if (title !== $(".songName").text()) {
       if (album === "") album = title;
 
       _axios.default.get("".concat(backendURL, "art?albumName=").concat(album, "&artist=").concat(artist)).then(function (_ref) {
         var data = _ref.data;
-        $(".art").attr("src", data);
+        setObject("art", data);
       }).catch(function (data) {
-        $(".art").attr("src", "https://imgur.com/KwLz0bC.png");
+        setObject("art", "https://imgur.com/KwLz0bC.png");
       });
     }
   } else {
-    $(".art").attr("src", art);
-    $(".dj").text("AutoDJ");
-    $(".listeners").text(nowPlaying.listeners.current + " Listeners");
+    setObject("art", art);
+    setObject("dj", "AutoDJ");
+    setObject("listeners", nowPlaying.listeners.current);
   }
 
   $(".songName").text(title);
@@ -14092,15 +14103,13 @@ $("#songSubmit").click(function () {
     method: 'post'
   }).then(function (_ref2) {
     var data = _ref2.data;
-
-    if (data.includes("success")) {
-      $("#songSubmit").text("Submited");
-      $("#songSubmit").attr("disabled", "disabled");
-      setTimeout(function () {
-        $("#songSubmit").text("Submit");
-        $("#songSubmit").attr("disabled", false);
-      }, 2000);
-    } else {}
+    $("#songSubmit").text("Submited");
+    $("#songSubmit").attr("disabled", "disabled");
+    $("#song").val("");
+    setTimeout(function () {
+      $("#songSubmit").text("Submit");
+      $("#songSubmit").attr("disabled", false);
+    }, 2000);
   });
 });
 $(".toggleplay").click(function () {
@@ -14157,7 +14166,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57983" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63563" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

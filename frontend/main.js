@@ -20,29 +20,41 @@ var playing = false;
 
 window.$ = window.jQuery = jquery;
 
+function setObject(type, data) {
+  if (type == "art") {
+    $(".art").attr("src", data)
+  } else if (type == "listeners") {
+    $(".listeners").text(data + " Listener" + (data > 1 ? "s" : ""))
+  } else if (type == "dj") {
+    $(".dj").text(data)
+  }
+}
+
 sub.on("message", function(message) {
     // Do something with the Now Playing data.
     let nowPlaying = JSON.parse(message);
+
+    setObject("listeners", nowPlaying.listeners.current)
+
     let {title, artist, art, album} = nowPlaying.now_playing.song
 
 
     if (nowPlaying.now_playing.streamer !== "") {
-      $(".dj").text(nowPlaying.now_playing.streamer)
-      $(".listeners").text(nowPlaying.listeners.current + " Listeners")
+      setObject("dj", nowPlaying.now_playing.streamer)
       if (title !== $(".songName").text()) {
         if (album === "") album = title
         axios.get(`${backendURL}art?albumName=${album}&artist=${artist}`)
           .then(({data}) => {
-            $(".art").attr("src", data)
+            setObject("art", data)
           })
           .catch((data) => {
-            $(".art").attr("src", "https://imgur.com/KwLz0bC.png")
+            setObject("art", "https://imgur.com/KwLz0bC.png")
           })
       }
     } else {
-      $(".art").attr("src", art)
-      $(".dj").text("AutoDJ")
-      $(".listeners").text(nowPlaying.listeners.current + " Listeners")
+      setObject("art", art)
+      setObject("dj", "AutoDJ")
+      setObject("listeners", nowPlaying.listeners.current)
     }
 
     $(".songName").text(title)
@@ -98,14 +110,12 @@ $("#songSubmit").click(() => {
     method: 'post'
   })
     .then(({data}) => {
-      if (data.includes("success")) {
-        $("#songSubmit").text("Submited")
-        $("#songSubmit").attr("disabled", "disabled")
-        
-        setTimeout(() => {$("#songSubmit").text("Submit"); 
-        $("#songSubmit").attr("disabled", false)}, 2000)
-      } else {
-      }
+      $("#songSubmit").text("Submited")
+      $("#songSubmit").attr("disabled", "disabled")
+      $("#song").val("")
+      
+      setTimeout(() => {$("#songSubmit").text("Submit"); 
+      $("#songSubmit").attr("disabled", false)}, 2000)
     })
 })
 
