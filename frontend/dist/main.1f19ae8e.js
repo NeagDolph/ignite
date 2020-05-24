@@ -14009,14 +14009,14 @@ var _modal = _interopRequireDefault(require("./modal.css"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var backendURL = "https://igniteonline.net/php/";
+var backendURL = "https://igniteonline.net/api/";
 var streamURL = "https://server.igniteradio.pw/radio/8000/radio.mp3";
 var apiURL = "https://listen.igniteradio.pw/api/live/nowplaying/ignite";
 var audio;
 var volume = 0.5;
 var sub = new _nchan.default(apiURL);
 var count;
-var countDownDate = new Date("May 30, 2020 12:00:00").getTime();
+var countDownDate = new Date("June 25, 2020 12:00:00").getTime();
 var playing = false;
 window.$ = window.jQuery = _jquery.default;
 sub.on("message", function (message) {
@@ -14035,11 +14035,11 @@ sub.on("message", function (message) {
     if (title !== $(".songName").text()) {
       if (album === "") album = title;
 
-      _axios.default.get("".concat(backendURL, "album?albumname=").concat(album, "&artistname=").concat(artist)).then(function (_ref) {
+      _axios.default.get("".concat(backendURL, "art?albumName=").concat(album, "&artist=").concat(artist)).then(function (_ref) {
         var data = _ref.data;
         $(".art").attr("src", data);
       }).catch(function (data) {
-        $(".art").attr("src", "https://imgur.com/9OlmHbc.png");
+        $(".art").attr("src", "https://imgur.com/KwLz0bC.png");
       });
     }
   } else {
@@ -14087,7 +14087,7 @@ $("#songSubmit").click(function () {
   params.append('name', $("#name")[0].value);
   params.append('song', $("#song")[0].value);
   (0, _axios.default)({
-    url: backendURL + "songRequest",
+    url: backendURL + "request",
     data: params,
     method: 'post'
   }).then(function (_ref2) {
@@ -14157,7 +14157,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58267" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57983" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

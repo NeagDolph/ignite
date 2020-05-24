@@ -5,7 +5,7 @@ import axios from 'axios'
 import MicroModal from 'micromodal';
 import modalcss from './modal.css'
 
-var backendURL = "https://igniteonline.net/php/";
+var backendURL = "https://igniteonline.net/api/";
 var streamURL = "https://server.igniteradio.pw/radio/8000/radio.mp3";
 var apiURL = "https://listen.igniteradio.pw/api/live/nowplaying/ignite"
 
@@ -31,7 +31,7 @@ sub.on("message", function(message) {
       $(".listeners").text(nowPlaying.listeners.current + " Listeners")
       if (title !== $(".songName").text()) {
         if (album === "") album = title
-        axios.get(`${backendURL}album?albumname=${album}&artistname=${artist}`)
+        axios.get(`${backendURL}art?albumName=${album}&artist=${artist}`)
           .then(({data}) => {
             $(".art").attr("src", data)
           })
@@ -93,7 +93,7 @@ $("#songSubmit").click(() => {
   params.append('song', $("#song")[0].value);
 
   axios({
-    url: backendURL + "songRequest", 
+    url: backendURL + "request", 
     data: params,
     method: 'post'
   })
