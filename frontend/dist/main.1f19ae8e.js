@@ -14021,13 +14021,7 @@ var playing = false;
 window.$ = window.jQuery = _jquery.default;
 
 function setObject(type, data) {
-  if (type == "art") {
-    $(".art").attr("src", data);
-  } else if (type == "listeners") {
-    $(".listeners").text(data + " Listener" + (data > 1 ? "s" : ""));
-  } else if (type == "dj") {
-    $(".dj").text(data);
-  }
+  if (type == "art") $(".art").attr("src", data);else if (type == "listeners") $(".listeners").text(data + " Listener" + (data > 1 ? "s" : ""));else if (type == "dj") $(".dj").html(data);
 }
 
 sub.on("message", function (message) {
@@ -14039,10 +14033,9 @@ sub.on("message", function (message) {
       artist = _nowPlaying$now_playi.artist,
       art = _nowPlaying$now_playi.art,
       album = _nowPlaying$now_playi.album;
+  if (nowPlaying.now_playing.streamer === "") setObject("dj", "AutoDJ");else setObject("dj", nowPlaying.now_playing.streamer);
 
-  if (nowPlaying.now_playing.streamer !== "") {
-    setObject("dj", nowPlaying.now_playing.streamer);
-
+  if (art.includes("imgur")) {
     if (title !== $(".songName").text()) {
       if (album === "") album = title;
 
@@ -14053,11 +14046,7 @@ sub.on("message", function (message) {
         setObject("art", "https://imgur.com/KwLz0bC.png");
       });
     }
-  } else {
-    setObject("art", art);
-    setObject("dj", "AutoDJ");
-    setObject("listeners", nowPlaying.listeners.current);
-  }
+  } else setObject("art", art);
 
   $(".songName").text(title);
   $(".artistName").text(artist.includes(";") ? artist.split(";")[0] : artist.includes(",") ? artist.split(",")[0] : artist);
@@ -14166,7 +14155,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63563" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54794" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

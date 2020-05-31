@@ -21,13 +21,12 @@ var playing = false;
 window.$ = window.jQuery = jquery;
 
 function setObject(type, data) {
-  if (type == "art") {
-    $(".art").attr("src", data)
-  } else if (type == "listeners") {
-    $(".listeners").text(data + " Listener" + (data > 1 ? "s" : ""))
-  } else if (type == "dj") {
-    $(".dj").text(data)
-  }
+  if (type == "art")
+    $(".art").attr("src", data);
+  else if (type == "listeners")
+    $(".listeners").text(data + " Listener" + (data > 1 ? "s" : ""));
+  else if (type == "dj")
+    $(".dj").html(data);
 }
 
 sub.on("message", function(message) {
@@ -38,9 +37,12 @@ sub.on("message", function(message) {
 
     let {title, artist, art, album} = nowPlaying.now_playing.song
 
+    if (nowPlaying.now_playing.streamer === "")
+      setObject("dj", "AutoDJ");
+    else
+      setObject("dj", nowPlaying.now_playing.streamer);
 
-    if (nowPlaying.now_playing.streamer !== "") {
-      setObject("dj", nowPlaying.now_playing.streamer)
+    if (art.includes("imgur")) {
       if (title !== $(".songName").text()) {
         if (album === "") album = title
         axios.get(`${backendURL}art?albumName=${album}&artist=${artist}`)
@@ -51,11 +53,7 @@ sub.on("message", function(message) {
             setObject("art", "https://imgur.com/KwLz0bC.png")
           })
       }
-    } else {
-      setObject("art", art)
-      setObject("dj", "AutoDJ")
-      setObject("listeners", nowPlaying.listeners.current)
-    }
+    } else setObject("art", art)
 
     $(".songName").text(title)
     $(".artistName").text(artist.includes(";") ? artist.split(";")[0] : (artist.includes(",") ? artist.split(",")[0] : artist))
