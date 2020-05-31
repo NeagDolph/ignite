@@ -10,7 +10,7 @@ var streamURL = "https://listen.igniteradio.pw/radio/8000/radio.mp3";
 var apiURL = "https://listen.igniteradio.pw/api/live/nowplaying/ignite"
 
 var audio;
-var volume = 0.5;
+var volume = 0.15;
 
 var sub = new NchanSubscriber(apiURL);
 
@@ -139,7 +139,7 @@ var togglePause = () => {
 }
 
 $(".slider").on("input", (data) => {
-  volume = data.target.value / 100;
+  volume = (data.target.value * 0.5) / 100;
   audio.volume = volume;
 })
 
