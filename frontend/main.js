@@ -6,7 +6,7 @@ import MicroModal from 'micromodal';
 import modalcss from './modal.css'
 
 var backendURL = "https://igniteonline.net/api/";
-var streamURL = "https://server.igniteradio.pw/radio/8000/radio.mp3";
+var streamURL = "https://listen.igniteradio.pw/radio/8000/radio.mp3";
 var apiURL = "https://listen.igniteradio.pw/api/live/nowplaying/ignite"
 
 var audio;
